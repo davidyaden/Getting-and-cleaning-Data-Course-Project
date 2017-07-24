@@ -1,6 +1,7 @@
 Getting and cleaning Data Course Project
 
 1. First step is to set working directory to data sets in "UCI HAR Dataset" and read files using read.table function.
+
 setwd("/Users/davidyaden/Desktop/coursera/UCI HAR Dataset")
 getwd()
 library(plyr)
@@ -14,6 +15,7 @@ xTest = read.table('./test/x_test.txt',header=FALSE)
 yTest = read.table('./test/y_test.txt',header=FALSE)
 
 2. Then combine data sets using rbind function.
+
 xDataSet <- rbind(xTrain, xTest)
 yDataSet <- rbind(yTrain, yTest)
 subjectDataSet <- rbind(subjectTrain, subjectTest)
@@ -23,17 +25,20 @@ dim(yDataSet)
 dim(subjectDataSet)
 
 3. Identify and isolate mean and standard deviation columns
+
 xDataSet_mean_std <- xDataSet[, grep("-(mean|std)\\(\\)", read.table("features.txt")[, 2])]
 names(xDataSet_mean_std) <- read.table("features.txt")[grep("-(mean|std)\\(\\)", read.table("features.txt")[, 2]), 2] 
 View(xDataSet_mean_std)
 dim(xDataSet_mean_std)
 
 4. Read labels and name activities
+
 yDataSet[, 1] <- read.table("activity_labels.txt")[yDataSet[, 1], 2]
 names(yDataSet) <- "Activity"
 View(yDataSet)
 
 5. Use activity labels as names
+
 names(subjectDataSet) <- "Subject"
 summary(subjectDataSet)
 
@@ -54,6 +59,7 @@ names(singleDataSet) <- gsub('Freq$',"Frequency",names(singleDataSet))
 View(singleDataSet)
 
 6. Duplicate data with the average of each activity/subjects
+
 names(singleDataSet)
 
 Data2<-aggregate(. ~Subject + Activity, singleDataSet, mean)
